@@ -1,0 +1,41 @@
+---
+title: "AnalyzeData.TareKBalaA"
+output: html_document
+date: "2023-04-19"
+---
+
+```{r}
+library(RMySQL)
+library(DBI)
+db_user <- 'root'
+db_password <- 'Password123'
+db_name <- "5200_practicum2"
+db_host <- 'localhost'
+db_port <- 3306
+mydb <-  dbConnect(MySQL(), user = db_user, password = db_password, dbname = db_name, host = db_host, port = db_port)
+dbSendQuery(mydb, "USE 5200_practicum2")
+```
+
+## Analytical Queries Report 
+
+In this report, we present the results of two analytical queries performed on our MySQL data warehouse. 
+
+# Top Ten Authors with the Most Publications
+
+The following table shows the top ten authors with the most publications: 
+```{r}
+dbGetQuery(mydb, "Select * from AuthorFacts order by NumArticles desc limit 10")
+```
+
+As you can see, Costa is the author with the most publications with 32 articles published. Additionally, Beckett, Thomas, and Storb have produced a comparable amount of publications to Costa. As a publication company, this information can be useful to identify highly motivated and productive authors and offer them writing opportunities. 
+
+# Top Journal with the Most Articles per Year
+
+The following table shows the top journal with the most articles per year:
+
+```{r}
+dbGetQuery(mydb, "Select JID, Title, Yearly from JournalFacts order by Yearly desc limit 1")
+```
+
+As you can see, "The Journal of pharmacy and pharmacology" has the most articles published with a Yearly average of 1036 articles. This information can be useful to identify the most popular journals and potentially collaborate with them to publish our own articles. 
+
